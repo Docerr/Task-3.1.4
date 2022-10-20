@@ -29,4 +29,9 @@ public class RoleDaoImpl implements RoleDao {
         return entityManager.createQuery("select r FROM Role r", Role.class).getResultList();
 
     }
+
+    @Override
+    public Role getRoleById(Long id) {
+        return entityManager.find(Role.class, id);
+    }
 }

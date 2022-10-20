@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,11 +30,13 @@ public class User implements UserDetails {
     @Column
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinTable(
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
     public Set<Role> getRoles() {
@@ -92,6 +96,11 @@ public class User implements UserDetails {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getRol() {
+        return getRoles().toString().replaceAll("[,\\[\\]]" , "").
+                replaceAll("ROLE_","");
     }
 
     @Override
