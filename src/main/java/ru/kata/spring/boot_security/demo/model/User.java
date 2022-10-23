@@ -98,7 +98,7 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getRol() {
+    public String getRole() {
         return getRoles().toString().replaceAll("[,\\[\\]]" , "").
                 replaceAll("ROLE_","");
     }
